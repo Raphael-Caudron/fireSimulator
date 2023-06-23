@@ -1,6 +1,10 @@
 package model;
 
-public class FireBoard //implements Boards 
-{
-
+public class FireBoard {
+	
+	private Grid grid;
+	
+	public FireBoard() {
+		
+	}
 }
