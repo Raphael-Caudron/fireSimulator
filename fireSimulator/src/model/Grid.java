@@ -2,6 +2,7 @@ package model;
 
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.Random;
 
 import tools.CellsFactory;
@@ -11,22 +12,31 @@ public class Grid {
 	private Set<Cell> cells;
 	private int hauteur;
 	private int largeur;
+	private int probability;
 	
-	//Constructor
-	public Grid(int h, int l, int nbr) {
+	// Constructor
+	public Grid(int h, int l, int nbr, int probPropag) {
 		this.hauteur = h;
 		this.largeur = l;
+		this.probability=probPropag;
 		this.cells = CellsFactory.initGrid(h,l);
-		this.setOnFire(nbr);
+		this.initOnFire(nbr);
+		this.setTargeted();
 		
-		//Gives a ONFIRE status randomly to a set number of cells
+		// Gives a ONFIRE status randomly to a set number of cells
 		
 		
 	}
 	
-	//Methods
+	// Getter
 	
-	private void setOnFire(int nbr) {
+	public Set<Cell> getGrid(){
+		return this.cells; //TODO Clone object
+	}
+	
+	// Methods
+	
+	private void initOnFire(int nbr) {
 		for(int i = 0; i < nbr; i++) {
 			Boolean test = true;
 			Random rand = new Random();
@@ -47,40 +57,90 @@ public class Grid {
 	}
 	
 	public void setTargeted() {
-		Iterator<Cell> it = cells.iterator();
+		Iterator<Cell> it1 = cells.iterator();
 		int ind = 0;
-		while(it.hasNext()) {
-			Cell cell = it.next();
+		while(it1.hasNext()) {
+			Cell cell = it1.next();
 			ind++;
 			if(cell.getStatus() == Status.ONFIRE) {
-				this.setTargOneFire(cell, ind);
+				int[] indArray = this.getPlacesTargOneFire(cell, ind);
+				Iterator<Cell> it2 = cells.iterator();
+				System.out.println("\n"+cell+"  "+ind+"\n");
+				for(int i = 0; i<4; i++) {
+					int placeTargCell = indArray[i];
+					if(placeTargCell != 0) {
+						
+						//Cell cellTarg;
+						//System.out.println(indArray[i]);
+						//System.out.println("ind"+i);
+						
+						for(int j=0; j<placeTargCell-1; j++) {
+							
+							it2.next();
+							//cellTarg = it2.next();
+							//System.out.println(cellTarg);
+						}
+						
+						//cellTarg = it2.next();
+						//System.out.println(cellTarg);
+						
+						Cell cellTarg = it2.next();
+						cellTarg.isTargOk();
+					}
+				}
 			}
 		}
 
 	}
 	
-	private void setTargOneFire(Cell cell, int place) {
-		Iterator<Cell> it = cells.iterator();
+	private int[] getPlacesTargOneFire(Cell cell, int place) {
 		int indArray [] = {place-this.largeur,this.largeur-1,2,this.largeur-1};
 		
+		int test = indArray[0];
 		int rest = place%this.largeur;
+		/* In order, checks if the target is out of bound
+		 * at the top, to the left, to the right and lastly, at the bottom
+		 */
+		if(test < 0) {
+			indArray[0]=0;
+			indArray[1]=place-1;
+			
+		}
 		if(rest == 1) {
 			indArray[1]=0;
+			indArray[2]=place+1-indArray[0]; //pb when at the top so calculated considering if ind0 is existent or not 
 		}
 		if(rest == 0) {
 			indArray[2]=0; 
+			indArray[3]=this.largeur+1;
+		}
+		if(place + this.largeur > this.largeur*this.hauteur) {
+			indArray[3]=0;
 		}
 		
-		for(int i = 0; i < 4; i+=3) {
-			int test = indArray[i];
-			if(test < 0 || test >= this.largeur*this.hauteur) {
-				indArray[i]=0;
-			}
+		return indArray;
+	}
+	
+	private void updateOnFire() {
+		Iterator<Cell> it = cells.iterator();
+		while(it.hasNext()) {
+			it.next().updateHimself(this.probability);
 		}
 	}
 	
+	public void update() {
+		this.updateOnFire();
+		this.setTargeted();
+	}
+	
 	// Tests unitaires
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
+		Grid myGrid = new Grid(5,5,10,50);
+		while(true) {
+			System.out.println(myGrid.cells);
+			TimeUnit.SECONDS.sleep(2);
+		    myGrid.update();
+		}
 		
 	}
 }
