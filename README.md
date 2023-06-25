@@ -10,7 +10,7 @@ L'affichage montre des carrés de différentes couleurs représentant l'état d'
 si elle est orange, cela veut dire qu'au moins un feu peut se propager sur cette case à la prochaine itération
 si elle est rouge, c'est qu'un feu y est présent et enfin, si c'est un carré vide, c'est que la case est devenue de la cendre
 
-# Back
+## Back
 
 Pour résumer la logique métier, il y a 4 classes dans le package model : 
   - Une classe "Status" qui est un énum de tous les états possibles d'une case
