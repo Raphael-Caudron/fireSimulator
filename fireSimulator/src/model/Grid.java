@@ -1,6 +1,8 @@
 package model;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.Random;
@@ -30,8 +32,46 @@ public class Grid {
 	
 	// Getter
 	
-	public Set<Cell> getGrid(){
-		return this.cells; //TODO Clone object
+	public List<Status> getGrid(){
+		Iterator<Cell> it = cells.iterator();
+		List<Status> cellsState = new ArrayList<Status>();
+		while(it.hasNext()) {
+			cellsState.add(it.next().getStatus());
+		}
+		
+		return cellsState;
+	}
+	
+	public List<String> getGrid2(){
+		Iterator<Cell> it = cells.iterator();
+		List<String> cellsState = new ArrayList<String>();
+		while(it.hasNext()) {
+			String text;
+			Status cellStatus = it.next().getStatus();
+			if(cellStatus==Status.NEUTRAL) {
+				text = "\u001B[32m" + "◼ " + "\u001B[0m";
+			}
+			else if(cellStatus==Status.ASH) {
+				text = "◻ ";
+			}
+			else if(cellStatus==Status.TARGETED) {
+				text = "\u001B[33m" + "◼ " + "\u001B[0m";
+			}
+			else {
+				text = "\u001B[31m" + "◼ " + "\u001B[0m";
+			}
+			cellsState.add(text);
+		}
+		
+		return cellsState;
+	}
+	
+	public int getHauteur() {
+		return this.hauteur;
+	}
+	
+	public int getLargeur() {
+		return this.largeur;
 	}
 	
 	// Methods
