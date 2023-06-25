@@ -1,5 +1,9 @@
 # fireSimulator (Français)
 
+## Sujet
+
+Voici une simulation de propagation de feu(x) faites en java. Le programme se lance dans le launcher (les paramètres se changent dans le launcher mais ils le seront bientôt dans un fichier de configuration).
+
 ## Display
 
 L'affichage montre des carrés de difféentes couleurs représentant l'état d'une case. Si elle est vert, elle est neutre,
