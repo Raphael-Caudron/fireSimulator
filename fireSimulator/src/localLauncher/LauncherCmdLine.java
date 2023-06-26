@@ -8,11 +8,11 @@ import model.Grid;
 public class LauncherCmdLine {
 	
 	public static void main(String[] args) throws InterruptedException {
-		Grid myGrid = new Grid(10,5,2,50);
+		Grid myGrid = new Grid(8,8,4,50);
 		Boolean test = true;
 		while(test) {
-			List<String> grid = myGrid.getGrid2();
-			System.out.println(grid);
+			test = myGrid.isFireAlive();
+			List<String> grid = myGrid.getGridDisplay();
 			int haut = myGrid.getHauteur();
 			int larg = myGrid.getLargeur();
 			for(int i = 0;i<haut;i++){//Change
@@ -21,6 +21,7 @@ public class LauncherCmdLine {
 				}
 				System.out.println();
 			}
+			System.out.println("--------------------------------");
 			TimeUnit.SECONDS.sleep(2);
 		    myGrid.update();
 		}

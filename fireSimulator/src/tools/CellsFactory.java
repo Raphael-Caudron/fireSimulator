@@ -28,7 +28,6 @@ public class CellsFactory {
 			for(int y = 0; y < hauteur; y++) {
 				Coord coord = new Coord(x,y);
 				cells.add(new Cell(coord));
-				System.out.println(coord);
 			}
 		}
 		return cells;

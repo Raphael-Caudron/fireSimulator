@@ -32,11 +32,17 @@ public class Cell {
 		this.status = newStatus;
 	}
 	
+	public void setNbrTarg(int nbr) {
+		this.nbrTarg=nbr;
+	}
 	// Methods
 	
+	/**
+	 * @return une boolean qui represente le fait que la case peut etre targeted ou non
+	 */
 	public Boolean isTargOk() {
 		Boolean ret = false;
-		if(this.status == Status.NEUTRAL) {
+		if(this.status == Status.NEUTRAL || this.status == Status.TARGETED) {
 			this.setStatus(Status.TARGETED);
 			this.nbrTarg+=1;
 			ret = true;
@@ -44,6 +50,12 @@ public class Cell {
 		return ret;
 	}
 	
+	/**
+	 * @param prob
+	 * La case verifie son etat et se met a jour.
+	 * Si elle est Targeted, elle a une probabilite prob de se changer en ONFIRE.
+	 * Ce processus est repete autant de fois qu'elle a de case ONFIRE qui la cible.
+	 */
 	public void updateHimself(int prob) {
 		if(this.status == Status.ONFIRE) {
 			this.setStatus(Status.ASH);
@@ -58,6 +70,7 @@ public class Cell {
 					statusEnd = Status.ONFIRE;
 				}
 			}
+			this.setNbrTarg(0);
 			this.setStatus(statusEnd);
 		}
 	}

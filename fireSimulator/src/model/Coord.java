@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class Coord implements Serializable {
+public class Coord{
 	
 	public int x, y;
 	
@@ -18,39 +18,5 @@ public class Coord implements Serializable {
 	@Override
 	public String toString() {
 		return "[x=" + x + ", y=" + y + "]";
-	}
-	
-	/**
-	 * @param x
-	 * @param y
-	 * @return true si les coordonnes sont valides
-	 */
-	public static boolean coordonnees_valides(int x, int y, int h, int l){
-		return ( (x<=l) && (x>=0) && (y<=h) && (y>=0) );
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + x;
-		result = prime * result + y;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Coord other = (Coord) obj;
-		if (x != other.x)
-			return false;
-		if (y != other.y)
-			return false;
-		return true;
 	}
 }
