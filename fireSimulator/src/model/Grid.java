@@ -15,6 +15,7 @@ public class Grid {
 	private int hauteur;
 	private int largeur;
 	private int probability;
+	private Boolean isThereAFire;
 	
 	// Constructor
 	public Grid(int h, int l, int nbr, int probPropag) {
@@ -22,6 +23,7 @@ public class Grid {
 		this.largeur = l;
 		this.probability=probPropag;
 		this.cells = CellsFactory.initGrid(h,l);
+		this.isThereAFire = false;
 		this.initOnFire(nbr);
 		this.setTargeted();
 		
@@ -32,9 +34,14 @@ public class Grid {
 	
 	// Getter
 	
+	public Boolean getIsFire() {
+		return this.isThereAFire;
+	}
+	
 	/**
 	 * 
 	 * @return une liste d'etat des cases pour ne pas renvoyer directement la grille et compromettre l'encapsulation.
+	 * non utilisée pour l'instant
 	 */
 	private List<Status> getGrid(){
 		Iterator<Cell> it = cells.iterator();
@@ -53,6 +60,7 @@ public class Grid {
 	public List<String> getGridDisplay(){
 		Iterator<Cell> it = cells.iterator();
 		List<String> cellsState = new ArrayList<String>();
+		this.isThereAFire = false;
 		while(it.hasNext()) {
 			String text;
 			Status cellStatus = it.next().getStatus();
@@ -67,6 +75,7 @@ public class Grid {
 			}
 			else {
 				text = "\u001B[31m" + "◼ " + "\u001B[0m";
+				this.isThereAFire = true;
 			}
 			cellsState.add(text);
 		}
@@ -90,10 +99,14 @@ public class Grid {
 	 */
 	private void initOnFire(int nbr) {
 		// Boucle sur le nombre de feu
+		if(nbr>=1) {
+			this.isThereAFire = true;
+		}
 		for(int i = 0; i < nbr; i++) {
 			Boolean test = true;
 			Random rand = new Random();
 			// Boucle While qui ne sort que quand le feu est bien initilalise 
+			
 			while(test) {
 				// Choisit au hasard un numéro de case
 				int nbrAlea = rand.nextInt(this.hauteur*this.largeur);
@@ -146,7 +159,6 @@ public class Grid {
 	}
 	
 	/**
-	 * 
 	 * @param cell
 	 * @param place
 	 * @return indArray qui sont les indices des cases à ciblés
@@ -201,18 +213,6 @@ public class Grid {
 	public void update() {
 		this.updateOnFire();
 		this.setTargeted();
-	}
-	
-	/**
-	 * 
-	 * @return true s'il y a au moins 1 feu sur la grille 
-	 */
-	public Boolean isFireAlive() { 
-		for(Status s : this.getGrid()) {
-			if(s == Status.ONFIRE)
-				return true;
-		}
-		return false;
 	}
 	
 	// Tests unitaires

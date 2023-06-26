@@ -11,8 +11,8 @@ public class LauncherCmdLine {
 		Grid myGrid = new Grid(8,8,4,50);
 		Boolean test = true;
 		while(test) {
-			test = myGrid.isFireAlive();
 			List<String> grid = myGrid.getGridDisplay();
+			test = myGrid.getIsFire();
 			int haut = myGrid.getHauteur();
 			int larg = myGrid.getLargeur();
 			for(int i = 0;i<haut;i++){//Change
