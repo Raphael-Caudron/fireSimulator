@@ -20,6 +20,11 @@ public class CellsFactory {
 		
 	}
 	
+	/**
+	 * @param hauteur
+	 * @param largeur
+	 * @return un linkedHashSet, representant la grille, des cases dans un etat neutre.
+	 */
 	public static Set<Cell> initGrid(int hauteur, int largeur){
 		Set<Cell> cells = null;
 		cells = new LinkedHashSet<Cell>();
